@@ -1,138 +1,108 @@
 import axios from 'axios';
-import { Link } from 'react-router-dom';
-import { useEffect,useState } from 'react';
-import { useParams } from 'react-router-dom';
+import BASE_URL from "../config/api";
+
+import { Link, useParams } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 import dayjs from 'dayjs';
-
-import CartIcon from '../../assets/images/icons/cart-icon.png';
-import SearchIcon from '../../assets/images/icons/search-icon.png';
-
-import MobileLogo from '../../assets/images/TC-Logo.png';
-import LogoWhite from '../../assets/images/TrendChoice-white-logo.png';
-
 
 import { Header } from '../../shared-components/Header';
 import './TrackingPage.css';
 
+export function TrackingPage({ cart }) {
+  const { orderId, productId } = useParams();
+  const [order, setOrder] = useState(null);
 
-export function TrackingPage({cart}) {
-    const {orderId,productId} = useParams();
+  useEffect(() => {
+    const fetchTrackingData = async () => {
+      try {
+        const res = await axios.get(
+          `${BASE_URL}/api/orders/${orderId}?expand=products`
+        );
+        setOrder(res.data);
+      } catch (error) {
+        console.error("Failed to fetch tracking data", error);
+      }
+    };
 
-    const [order,setOrder] = useState(null);
+    fetchTrackingData();
+  }, [orderId]);
 
-    useEffect(() => {
-        const fetchTrackingData = async () => {
-            const res= await axios.get(`/api/orders/${orderId}?expand=products`);
-            setOrder(res.data);
-        };
-        fetchTrackingData();
-    },[orderId]);
+  if (!order) return null;
 
-    if(!order){
-        return null;
-    }
+  const orderProduct = order.products.find(
+    (orderProduct) => orderProduct.product.id === productId
+  );
 
-    const orderProduct=order.products.find((orderProduct) => {
-        return orderProduct.productId.id=== productId;
-    });
-    
+  if (!orderProduct) {
+    return <p>Product not found</p>;
+  }
 
-    const totalDeliveryTimeMs = orderProduct.estimatedDeliveryTimeMs - order.orderTimeMs;
+  const totalDeliveryTimeMs =
+    orderProduct.estimatedDeliveryTimeMs - order.orderTimeMs;
 
-    const timePassedMs = dayjs().valueOf() - order.orderTimeMs;
+  const timePassedMs = dayjs().valueOf() - order.orderTimeMs;
 
-    let deliveryPercent =(timePassedMs/totalDeliveryTimeMs)*100;
+  let deliveryPercent = (timePassedMs / totalDeliveryTimeMs) * 100;
+  if (deliveryPercent > 100) deliveryPercent = 100;
 
-    if (deliveryPercent > 100){
-        deliveryPercent =100;
-    }
+  const isPreparing = deliveryPercent < 33;
+  const isShipped = deliveryPercent >= 33 && deliveryPercent < 100;
+  const isDelivered = deliveryPercent === 100;
 
-    const isPreparing = deliveryPercent <33;
+  return (
+    <>
+      <link rel="icon" type="image/svg+xml" href="tracking-favicon.png" />
+      <title>Tracking</title>
 
-    const isShipped = deliveryPercent >= 33 && deliveryPercent < 100;
+      <Header cart={cart} />
 
-    const isDelivered = deliveryPercent === 100;
+      <div className="tracking-page">
+        <div className="order-tracking">
+          <Link className="back-to-orders-link link-primary" to="/orders">
+            View all orders
+          </Link>
 
-    if (!orderProduct) return <p>Product not found</p>;
+          <div className="delivery-date">
+            Arriving on{" "}
+            {dayjs(orderProduct.estimatedDeliveryTimeMs).format(
+              "dddd, MMMM D"
+            )}
+          </div>
 
+          <div className="product-info">
+            {orderProduct.product.name}
+          </div>
 
-    return (
-        <>
-            <link rel="icon" type="image/svg+xml" href="tracking-favicon.png" />
-            <title>Tracking</title>
-            <Header cart={cart}/>
-            <div className="header">
-                <div className="left-section">
-                    <Link to="/" className="header-link">
-                        <img className="logo"
-                            src={LogoWhite} />
-                        <img className="mobile-logo"
-                            src={MobileLogo} />
-                    </Link>
-                </div>
+          <div className="product-info">
+            Quantity: {orderProduct.quantity}
+          </div>
 
-                <div className="middle-section">
-                    <input className="search-bar" type="text" placeholder="Search" />
+          <img
+            className="product-image"
+            src={orderProduct.product.image}
+            alt={orderProduct.product.name}
+          />
 
-                    <button className="search-button">
-                        <img className="search-icon" src={SearchIcon} />
-                    </button>
-                </div>
-
-                <div className="right-section">
-                    <Link className="orders-link header-link" to="/orders">
-
-                        <span className="orders-text">Orders</span>
-                    </Link>
-
-                    <Link className="cart-link header-link" to="/checkout">
-                        <img className="cart-icon" src={CartIcon} />
-                        <div className="cart-quantity">3</div>
-                        <div className="cart-text">Cart</div>
-                    </Link>
-                </div>
+          <div className="progress-labels-container">
+            <div className={`progress-label ${isPreparing ? "current-status" : ""}`}>
+              Preparing
             </div>
-
-            <div className="tracking-page">
-                <div className="order-tracking">
-                    <Link className="back-to-orders-link link-primary" to="/orders">
-                        View all orders
-                    </Link>
-
-                    <div className="delivery-date">
-            
-                        Arriving on {dayjs(orderProduct.estimatedDeliveryTimeMs).format('dddd, MMMM D')}
-                    </div>
-
-                    <div className="product-info">
-                        {orderProduct.product.name}
-                    </div>
-
-                    <div className="product-info">
-                        Quantity: {orderProduct.quantity}
-                    </div>
-
-                    <img className="product-image" src={orderProduct.product.image}
-                            alt={orderProduct.product.name} />
-
-                    <div className="progress-labels-container">
-                        <div className={`progress-label ${isPreparing && 'current-status'}`}>
-                            Preparing
-                        </div>
-                        <div className={`progress-label ${isShipped && 'current-status'}`}>
-                            Shipped
-                        </div>
-                        <div className={`progress-label ${isDelivered && 'current-status'}`}>
-                            Delivered
-                        </div>
-                    </div>
-
-                    <div className="progress-bar-container">
-                        <div className="progress-bar" style={{ width:`${deliveryPercent}%`}}></div>
-                    </div>
-                </div>
+            <div className={`progress-label ${isShipped ? "current-status" : ""}`}>
+              Shipped
             </div>
-        </>
-    );
+            <div className={`progress-label ${isDelivered ? "current-status" : ""}`}>
+              Delivered
+            </div>
+          </div>
+
+          <div className="progress-bar-container">
+            <div
+              className="progress-bar"
+              style={{ width: `${deliveryPercent}%` }}
+            />
+          </div>
+        </div>
+      </div>
+    </>
+  );
 }
-
