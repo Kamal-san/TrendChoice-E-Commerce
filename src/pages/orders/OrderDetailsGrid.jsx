@@ -1,5 +1,6 @@
 import axios from 'axios';
-import BASE_URL from "../config/api";
+const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
 
 import { Fragment} from "react";
 import { Link } from 'react-router-dom';
@@ -63,3 +64,4 @@ export function OrderDetailsGrid({order,loadCart})
     );
 
 }
+
