@@ -1,5 +1,12 @@
 # React + Vite
 
+🛒 TrendChoice – Full-Stack E-Commerce Application
+
+TrendChoice is a production-ready full-stack e-commerce web application built with React and Node.js.
+The project demonstrates real-world frontend–backend integration, REST APIs, state management, and deployment best practices.
+
+This project was built to showcase full-stack development skills and industry-standard architecture.
+
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
 Currently, two official plugins are available:
