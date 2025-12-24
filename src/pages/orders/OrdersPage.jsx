@@ -1,4 +1,6 @@
 import axios from 'axios';
+import BASE_URL from "../config/api";
+
 import { useState, useEffect} from 'react';
 
 import { Header } from '../../shared-components/Header';
@@ -10,7 +12,7 @@ export function OrdersPage({ cart,loadCart }) {
 
     useEffect(() => {
         const fetchOrdersData= async () => {
-            const res=await axios.get('api/orders?expand=products');
+            const res=await axios.get(`${BASE_URL}/api/orders?expand=products`);
             setOrders(res.data);
         };
 
@@ -32,4 +34,5 @@ export function OrdersPage({ cart,loadCart }) {
             </div>
         </>
     );
+
 }
