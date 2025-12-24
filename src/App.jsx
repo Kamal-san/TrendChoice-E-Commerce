@@ -1,4 +1,5 @@
 import axios from'axios';
+import BASE_URL from "../config/api"; //Adding base url
 import { Routes,Route } from 'react-router-dom';
 import { useEffect,useState}  from 'react';
 import { HomePage } from './pages/home/HomePage';
@@ -15,7 +16,7 @@ function App() {
   // loadCart helps us to loading cart without refreshing it
   // also this is lifting the stage up - allows us share this across all components
   const loadCart = async()=>{
-        const res=   await axios.get('/api/cart-items?expand=product') 
+        const res=   await axios.get(`${BASE_URL}/api/cart-items?expand=product`) 
       // ? - Query parameter -> lets us add additional info to the request
         setCart(res.data);
 
