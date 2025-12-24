@@ -1,4 +1,6 @@
 import axios from "axios";
+import BASE_URL from "../config/api";
+
 import { useState } from "react";
 
 
@@ -11,7 +13,7 @@ export function Product({product, loadCart}) {
     const [showAddedMessage , setShowAddedMessage ]= useState(false);
 
     const addToCart = async () => {
-                await axios.post('/api/cart-items',
+                await axios.post(`${BASE_URL}/api/cart-items`,
                     {
                         productId: product.id,
                         quantity: quantity
@@ -91,4 +93,5 @@ export function Product({product, loadCart}) {
             </button>
         </div>
     );
+
 }
