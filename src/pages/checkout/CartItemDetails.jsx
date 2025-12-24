@@ -24,7 +24,7 @@ export function CartItemDetails({ cartItem, loadCart }) {
     }
   };
   const updateQuantityInput = (event) => {
-    setQuantity(event.target.value);
+    setQuantity(Number(event.target.value));
   };
 
   const handleQuantityKeyDown = (event) => {
@@ -74,3 +74,4 @@ export function CartItemDetails({ cartItem, loadCart }) {
   );
 
 }
+
