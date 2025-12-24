@@ -1,5 +1,6 @@
 import axios from 'axios';
-import BASE_URL from "../config/api";
+const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
 import { useState, useEffect } from 'react';
 
 import { OrderSummary } from './OrderSummary';
@@ -54,3 +55,4 @@ export function CheckoutPage({ cart,loadCart }) {
     );
 
 }
+
