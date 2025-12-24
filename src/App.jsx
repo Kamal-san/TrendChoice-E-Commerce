@@ -1,5 +1,7 @@
 import axios from 'axios';
-import BASE_URL from "../config/api";
+const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
+
 import { Routes, Route } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 
