@@ -4,7 +4,7 @@ import { NavLink, useNavigate, useSearchParams } from 'react-router-dom';
 import CartIcon from '../assets/images/icons/cart-icon.png';
 import SearchIcon from '../assets/images/icons/search-icon.png';
 
-import MobileLogoWhite from '../assets/images/TC-logo-white.png';
+//import MobileLogoWhite from '../assets/images/TC-logo-white.png';
 import LogoWhite from '../assets/images/TrendChoice-white-logo.png';
 import './Header.css';
 
@@ -34,7 +34,7 @@ export function Header({cart}) {
         <div className="header">
             <div className="left-section">
                 <NavLink to="/" className="header-link">
-                     <img className='mobile-logo-white' src={MobileLogoWhite} />
+                    {/*<img className='mobile-logo-white' src={MobileLogoWhite} />*/}
                     <img className="logo"
                         src={LogoWhite} />
                 </NavLink>
@@ -65,3 +65,4 @@ export function Header({cart}) {
     );
 
 }
+
