@@ -1,4 +1,5 @@
 import axios from 'axios';
+import BASE_URL from "../config/api";
 
 import { Fragment} from "react";
 import { Link } from 'react-router-dom';
@@ -15,7 +16,7 @@ export function OrderDetailsGrid({order,loadCart})
 
         {order.products.map((orderProduct) => {
             const buyAgain = async() => {
-                await axios.post('api/cart-items',
+                await axios.post(`${BASE_URL}/api/cart-items`,
                 {
                     productId:orderProduct.product.id,
                     quantity: 1
@@ -60,4 +61,5 @@ export function OrderDetailsGrid({order,loadCart})
                             })}
                         </div>
     );
+
 }
