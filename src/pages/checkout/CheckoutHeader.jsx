@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import CheckoutLockIcon from '../../assets/images/icons/checkout-lock-icon.png';
 
 import Logo from '../../assets/images/TrendChoice-logo.png';
-import MobileLogo from '../../assets/images/TC-logo.png';
+import MobileLogo from '../../assets/images/TC-Logo.png';
 export function CheckoutHeader({cart})
 {
     let totalQuantity = 0;
@@ -32,4 +32,5 @@ export function CheckoutHeader({cart})
             </div>
 
     );
+
 }
