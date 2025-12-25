@@ -1,4 +1,4 @@
-# React + Vite
+# Trend Choice
 
 🛒 TrendChoice – Full-Stack E-Commerce Application
 
